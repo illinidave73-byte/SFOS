@@ -1,0 +1,2 @@
+class SFOSError(Exception):
+    pass

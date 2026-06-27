@@ -1,0 +1,5 @@
+[project]
+name="sfos"
+version="0.1.1"
+description="Stone Family Operating System"
+requires-python=">=3.11"
