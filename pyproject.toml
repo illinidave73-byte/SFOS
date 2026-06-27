@@ -1,5 +1,9 @@
 [project]
-name="sfos"
-version="0.1.1"
-description="Stone Family Operating System"
-requires-python=">=3.11"
+name = "sfos"
+version = "0.1.2"
+description = "Stone Financial Operating System"
+requires-python = ">=3.13"
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
