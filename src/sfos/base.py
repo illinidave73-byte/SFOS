@@ -9,7 +9,7 @@ from datetime import datetime, UTC
 from uuid import uuid4
 
 
-@dataclass(slots=True)
+@dataclass(slots=True, kw_only=True)
 class BaseModel:
     """
     Base class for all SFOS domain objects.
