@@ -1,0 +1,13 @@
+application:
+  name: Stone Family Operating System
+  version: 0.3.0
+
+treasury:
+  low_cash_threshold: 1000.00
+  forecast_days: 30
+
+forecast:
+  include_pending_transactions: false
+
+reporting:
+  currency: USD

@@ -9,7 +9,7 @@ def test_engine_loads():
         Path("data") / "master_account_registry.csv"
     )
 
-    assert engine.low_cash_threshold() == 1000.0
+    assert engine.LOW_CASH_WARNING == 1000.0
 
 
 def test_summary():

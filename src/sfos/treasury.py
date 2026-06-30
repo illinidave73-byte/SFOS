@@ -1,42 +1,61 @@
 """
 SFOS Treasury Engine
-
-Provides a high-level view of household cash.
 """
 
 from pathlib import Path
 
 from sfos.ledger import FinancialLedger
+from sfos.transaction_importer import TransactionImporter
 
 
 class TreasuryEngine:
-    """Treasury Engine."""
 
     LOW_CASH_WARNING = 1000.00
 
-    def __init__(self, registry_path: str | Path):
+    def __init__(
+        self,
+        registry_path: str | Path,
+        transaction_path: str | Path | None = None,
+    ):
         self.ledger = FinancialLedger(registry_path)
 
-    def current_cash(self) -> float:
-        """
-        Placeholder until live balances are connected.
+        self.transactions = []
 
-        Future versions will calculate this from checking and savings
-        account balances.
-        """
-        return 0.0
+        if transaction_path:
+            importer = TransactionImporter(transaction_path)
+            self.transactions = importer.load()
 
-    def low_cash_threshold(self) -> float:
-        return self.LOW_CASH_WARNING
+    def checking_balance(self) -> float:
+        """
+        Return the latest posted checking balance.
+        """
+
+        if not self.transactions:
+            return 0.0
+
+        return self.transactions[-1].balance
+
+    def cash_position(self) -> float:
+        """
+        Current household cash.
+
+        Today:
+            Checking only
+
+        Future:
+            Checking + Savings + Money Market
+        """
+        return self.checking_balance()
 
     def is_low_cash(self) -> bool:
-        return self.current_cash() < self.LOW_CASH_WARNING
+        return self.cash_position() < self.LOW_CASH_WARNING
 
-    def summary(self) -> dict:
+    def summary(self):
+
         return {
             "accounts": self.ledger.account_count(),
             "active_accounts": self.ledger.active_account_count(),
             "institutions": len(self.ledger.institutions),
-            "cash": self.current_cash(),
+            "cash": self.cash_position(),
             "low_cash": self.is_low_cash(),
         }

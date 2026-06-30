@@ -1,0 +1,22 @@
+ID,Name,Type,Amount,Frequency,Day Rule,Next Date,Source Account,Category,Priority,Variable,Active,Notes,Auto Detect,Tolerance Days
+I001,Boeing Payroll - Dave,Income,5386.07,Biweekly,Every Other Thursday,TBD,First Mid Checking,Income,Critical,No,Yes,Primary paycheck,Yes,2
+I002,Jana Payroll,Income,1836.17,Biweekly,15th and 30th of every month,TBD,First Mid Checking,Income,Critical,No,Yes,Secondary paycheck,Yes,2
+E001,US Bank Mortgage,Expense,2625.12,Monthly,first of every month,TBD,First Mid Checking,Housing,Critical,No,Yes,Primary mortgage,Yes,2
+E002,Shellpoint 2nd Mortgage,Expense,599.28,Monthly,5th of every month,TBD,First Mid Checking,Housing,Critical,No,Yes,Second mortgage,Yes,2
+E003,Ameren,Expense,86,Monthly,24th of every month,TBD,First Mid Checking,Utilities,High,Yes,Yes,Gas,Yes,2
+E004,SWECI Electric Bill,Expense,150,Monthly,17th of every month,TBD,First Mid Checking,Utilities,High,Yes,Yes,Electric,Yes,2
+E005,Water/Sewer,Expense,230,every other month,every two months on first of month,TBD,First Mid Checking,Utilities,High,Yes,Yes,Autopay,Yes,2
+E006,Internet/Mobile Phone,Expense,360,Monthly,26th of every month,TBD,First Mid Checking,Utilities,High,No,Yes,Autopay,Yes,2
+E007,USAA Auto Insurance,Expense,364.53,Monthly,23rd of every month,TBD,First Mid Checking,Insurance,High,No,Yes,Autopay,Yes,2
+E008,USAA Credit Card,Expense,383,Monthly,20th of every month,TBD,First Mid Checking,Debt,High,Yes,Yes,Autopay,Yes,2
+E009,American Express,Expense,497.5,Monthly,6th of every month,TBD,First Mid Checking,Debt,High,Yes,Yes,Autopay,Yes,2
+E010,Marriott Visa,Expense,409,Monthly,22nd of every month,TBD,First Mid Checking,Debt,High,Yes,Yes,Autopay,Yes,2
+E011,Southwest Visa,Expense,387,Monthly,10th of every month,TBD,First Mid Checking,Debt,High,Yes,Yes,Autopay,Yes,2
+E012,CEFCU Auto Loan,Expense,515.33,Monthly,30th of every month,TBD,First Mid Checking,Transportation,Critical,No,Yes,Autopay,Yes,2
+E013,Wells Fargo Auto Loan,Expense,794.12,Monthly,25th of every month,TBD,First Mid Checking,Transportation,Critical,No,Yes,Autopay,Yes,2
+E014,USAA Auto Loan,Expense,881.12,Monthly,15th of every month,TBD,First Mid Checking,Transportation,Critical,No,Yes,Autopay,Yes,2
+E015,Federal Tax Adjustment,Expense,0,Annual,TBD,TBD,First Mid Checking,Taxes,Medium,Yes,No,Future Tax Engine,,2
+E016,HOA Dues,Expense,250,Annual,TBD,First Day of july,First Mid Checking,other,Low,Yes,Yes,,,2
+E017,Netflix,Expense,19.99,Monthly,15th of every month,TBD,First Mid Checking,other,Low,Yes,Yes,,,2
+E018,Spotify,Expense,21.99,Monthly,20th of every month,TBD,First Mid Checking,other,Low,Yes,Yes,,,2
+E019,Ring,Expense,9.99,Monthly,5th of every month,TBD,First Mid Checking,other,Low,Yes,Yes,,,2
