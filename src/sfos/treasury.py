@@ -6,11 +6,11 @@ from pathlib import Path
 
 from sfos.ledger import FinancialLedger
 from sfos.transaction_importer import TransactionImporter
-
+from sfos.config import Configuration
 
 class TreasuryEngine:
 
-    LOW_CASH_WARNING = 1000.00
+    LOW_CASH_WARNING = None
 
     def __init__(
         self,
@@ -18,6 +18,7 @@ class TreasuryEngine:
         transaction_path: str | Path | None = None,
     ):
         self.ledger = FinancialLedger(registry_path)
+        self.config = Configuration()
 
         self.transactions = []
 
@@ -48,7 +49,10 @@ class TreasuryEngine:
         return self.checking_balance()
 
     def is_low_cash(self) -> bool:
-        return self.cash_position() < self.LOW_CASH_WARNING
+        return (
+            self.cash_position()
+            < self.config.low_cash_threshold
+        )
 
     def summary(self):
 
