@@ -27,3 +27,17 @@ Positive
 Negative
 
 - Additional abstraction
+
+## Rule Design
+
+Scheduling rules are intentionally data-driven.
+
+Rather than creating dozens of rule types (e.g. Every Other Thursday, Last Business Day), rules are composed from reusable properties such as:
+
+- frequency
+- interval
+- weekday
+- day-of-month
+- business-day adjustment
+
+This minimizes the number of rule types while maximizing flexibility.

@@ -1,0 +1,16 @@
+from datetime import date
+
+from sfos.schedule_rule import ScheduleRule
+
+
+def test_extended_schedule_rule():
+
+    rule = ScheduleRule(
+        rule_type="Semi-Monthly",
+        start_date=date(2026, 1, 1),
+        days_of_month=[15, 30],
+        business_day_adjustment="previous",
+    )
+
+    assert rule.days_of_month == [15, 30]
+    assert rule.business_day_adjustment == "previous"
