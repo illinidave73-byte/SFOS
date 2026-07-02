@@ -18,7 +18,13 @@ class ScheduledOccurrence(BaseModel):
 
     amount: float | None = None
 
-    metadata: dict = None
+    priority: str = "Normal"
+
+    category: str = ""
+
+    source_account: str = ""
+
+    metadata: dict | None = None
 
     def __post_init__(self):
 

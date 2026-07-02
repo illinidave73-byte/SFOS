@@ -19,6 +19,9 @@ class SchedulingService:
         start_date,
         end_date,
         amount: float | None = None,
+        priority: str = "Normal",
+        category: str = "",
+        source_account: str = "",
     ) -> list[ScheduledOccurrence]:
 
         occurrences: list[ScheduledOccurrence] = []
@@ -32,6 +35,9 @@ class SchedulingService:
                     occurrence_date=current,
                     event_name=event_name,
                     amount=amount,
+                    priority=priority,
+                    category=category,
+                    source_account=source_account,
                 )
             )
 
