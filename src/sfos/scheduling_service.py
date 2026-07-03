@@ -16,6 +16,7 @@ class SchedulingService:
         self,
         rule: ScheduleRule,
         event_name: str,
+        flow_type: str, 
         start_date,
         end_date,
         amount: float | None = None,
@@ -34,6 +35,7 @@ class SchedulingService:
                 ScheduledOccurrence(
                     occurrence_date=current,
                     event_name=event_name,
+                    flow_type=flow_type, 
                     amount=amount,
                     priority=priority,
                     category=category,

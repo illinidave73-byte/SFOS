@@ -8,6 +8,7 @@ def test_occurrence_metadata():
     event = ScheduledOccurrence(
         occurrence_date=date.today(),
         event_name="Payroll",
+        flow_type="Income",
         amount=100,
         priority="Critical",
         category="Income",

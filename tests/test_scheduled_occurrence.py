@@ -8,6 +8,7 @@ def test_occurrence():
     occurrence = ScheduledOccurrence(
         occurrence_date=date.today(),
         event_name="Payroll",
+        flow_type="Income",
         amount=1000,
     )
 

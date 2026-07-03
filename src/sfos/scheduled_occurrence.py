@@ -16,6 +16,8 @@ class ScheduledOccurrence(BaseModel):
 
     event_name: str
 
+    flow_type: str
+
     amount: float | None = None
 
     priority: str = "Normal"

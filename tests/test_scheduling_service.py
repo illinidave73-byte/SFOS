@@ -16,6 +16,7 @@ def test_one_time():
     events = service.generate(
         rule,
         "Test",
+        "Expense",
         date(2026, 1, 1),
         date(2026, 1, 31),
     )
@@ -35,6 +36,7 @@ def test_weekly():
     events = service.generate(
         rule,
         "Payroll",
+        "Income",
         date(2026, 1, 1),
         date(2026, 1, 31),
     )
@@ -54,6 +56,7 @@ def test_monthly():
     events = service.generate(
         rule,
         "Mortgage",
+        "Expense",
         date(2026, 1, 1),
         date(2026, 3, 31),
     )

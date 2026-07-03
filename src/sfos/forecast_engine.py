@@ -5,25 +5,22 @@ SFOS Cash Forecast Engine
 from datetime import timedelta
 
 from sfos.cash_forecast import CashForecast
-from sfos.recurring_cash_flow_registry import RecurringCashFlowRegistry
+
 
 
 class ForecastEngine:
     """Generates a simple cash forecast."""
 
-    def __init__(self, current_balance, registry_path, days=30):
+    def __init__(self, current_balance, days=30):
         self.current_balance = current_balance
-        self.registry = RecurringCashFlowRegistry(registry_path)
         self.days = days
 
-    def generate(self):
+    def generate(self,occurrences):
 
-        events = [
-            e for e in self.registry.events
-            if e.active and e.next_date is not None
-        ]
-
-        events.sort(key=lambda e: e.next_date)
+        events = sorted(
+            occurrences,
+            key=lambda o: o.occurrence_date,
+        )
 
         balance = self.current_balance
 
@@ -33,7 +30,7 @@ class ForecastEngine:
         daily = []
 
         current_day = min(
-            (e.next_date for e in events),
+            (e.occurrence_date for e in events),
             default=None
         )
 
@@ -46,12 +43,13 @@ class ForecastEngine:
 
                 for event in events:
 
-                    if event.next_date == current_day:
+                    if event.occurrence_date == current_day:
 
                         if event.flow_type == "Income":
                             balance += event.amount
                         else:
-                            balance -= event.amount
+                            balance -= event.amount # TODO(Issue #16): Restore flow_type handling after
+                                                    # ScheduledOccurrence is extended with financial attributes.
 
             daily.append(balance)
 
