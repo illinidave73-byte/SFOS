@@ -38,7 +38,19 @@ class ScheduleParser:
                     interval=1,
                     day_of_week=3,
                 ) 
-            
+
+        if (
+            frequency.lower() == "every other month"
+            and day_rule.lower().strip() == "every two months on first of month"
+        ):
+
+            return ScheduleRule(
+                rule_type="Monthly",
+                start_date=None,
+                interval=2,
+                day_of_month=1,
+            )
+
         if frequency.lower() == "annual":
 
             if day_rule.lower().strip() == "first day of july":

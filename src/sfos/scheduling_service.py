@@ -66,6 +66,9 @@ class SchedulingService:
         if rule_type == "biweekly":
             return current + timedelta(weeks=2 * rule.interval)
 
+        if rule_type == "semimonthly":
+            return self._next_semi_monthly(current, rule)
+
         if rule_type == "monthly":
             return self._add_months(current, rule.interval)
 
@@ -76,6 +79,28 @@ class SchedulingService:
             return self._add_months(current, 12 * rule.interval)
 
         raise ValueError(f"Unsupported rule type: {rule.rule_type}")
+
+    def _next_semi_monthly(self, current, rule):
+
+        first_day, second_day = sorted(rule.days_of_month)
+
+        if current.day == first_day:
+
+            next_day = min(
+                second_day,
+                monthrange(current.year, current.month)[1],
+            )
+
+            return current.replace(day=next_day)
+
+        next_month = self._add_months(current, 1)
+
+        next_day = min(
+            first_day,
+            monthrange(next_month.year, next_month.month)[1],
+        )
+
+        return next_month.replace(day=next_day)
 
     @staticmethod
     def _add_months(current, months):

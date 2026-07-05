@@ -1,16 +1,17 @@
 from pathlib import Path
 
 from sfos.forecast_pipeline import ForecastPipeline
-from sfos.schedule_rule import ScheduleRule
 
 
 def test_pipeline_loads_registry():
 
     pipeline = ForecastPipeline()
 
-    rules = pipeline.generate(
+    forecast = pipeline.generate(
         registry_path=Path("data") / "recurring_cash_flow.csv",
+        current_balance=8069.52,
     )
 
-    assert len(rules) > 0
-    assert isinstance(rules[0], ScheduleRule)
+    assert forecast.opening_balance == 8069.52
+    assert forecast.ending_balance >= 0
+    assert len(forecast.daily_balances) == 30

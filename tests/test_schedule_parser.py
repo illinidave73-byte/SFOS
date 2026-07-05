@@ -64,3 +64,16 @@ def test_parse_annual_first_day_of_july():
     assert rule.rule_type == "Annual"
     assert rule.day_of_month == 1
     assert rule.start_date is None
+
+def test_parse_every_other_month():
+
+    parser = ScheduleParser()
+
+    rule = parser.parse(
+        frequency="every other month",
+        day_rule="every two months on first of month",
+    )
+
+    assert rule.rule_type == "Monthly"
+    assert rule.interval == 2
+    assert rule.day_of_month == 1

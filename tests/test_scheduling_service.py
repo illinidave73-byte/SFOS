@@ -87,3 +87,28 @@ def test_generate_uses_forecast_start_when_rule_start_is_none():
 
     assert len(occurrences) > 0
     assert occurrences[0].occurrence_date == date(2026, 1, 1)
+
+def test_semi_monthly():
+
+    service = SchedulingService()
+
+    rule = ScheduleRule(
+        rule_type="SemiMonthly",
+        start_date=date(2026, 1, 15),
+        days_of_month=[15, 30],
+    )
+
+    events = service.generate(
+        rule,
+        "Jana Payroll",
+        "Income",
+        date(2026, 1, 1),
+        date(2026, 2, 28),
+    )
+
+    assert len(events) == 4
+
+    assert events[0].occurrence_date == date(2026, 1, 15)
+    assert events[1].occurrence_date == date(2026, 1, 30)
+    assert events[2].occurrence_date == date(2026, 2, 15)
+    assert events[3].occurrence_date == date(2026, 2, 28)
