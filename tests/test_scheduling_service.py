@@ -62,3 +62,28 @@ def test_monthly():
     )
 
     assert len(events) == 3
+
+from datetime import date
+
+
+def test_generate_uses_forecast_start_when_rule_start_is_none():
+
+    rule = ScheduleRule(
+        rule_type="Monthly",
+        start_date=None,
+        interval=1,
+    )
+
+    service = SchedulingService()
+
+    occurrences = service.generate(
+        rule=rule,
+        event_name="Test Event",
+        flow_type="Expense",
+        start_date=date(2026, 1, 1),
+        end_date=date(2026, 1, 31),
+        amount=100,
+    )
+
+    assert len(occurrences) > 0
+    assert occurrences[0].occurrence_date == date(2026, 1, 1)

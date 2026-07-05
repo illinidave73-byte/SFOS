@@ -26,3 +26,41 @@ def test_parse_monthly_numeric_day():
 
     assert rule.rule_type == "Monthly"
     assert rule.day_of_month == 24
+
+def test_parse_biweekly_thursday():
+
+    parser = ScheduleParser()
+
+    rule = parser.parse(
+        frequency="Biweekly",
+        day_rule="Every Other Thursday",
+    )
+
+    assert rule.rule_type == "Biweekly"
+    assert rule.interval == 1
+    assert rule.day_of_week == 3
+
+def test_parse_semi_monthly():
+
+    parser = ScheduleParser()
+
+    rule = parser.parse(
+        frequency="Biweekly",
+        day_rule="15th and 30th of every month",
+    )
+
+    assert rule.rule_type == "SemiMonthly"
+    assert rule.days_of_month == [15, 30]
+
+def test_parse_annual_first_day_of_july():
+
+    parser = ScheduleParser()
+
+    rule = parser.parse(
+        frequency="Annual",
+        day_rule="First Day of July",
+    )
+
+    assert rule.rule_type == "Annual"
+    assert rule.day_of_month == 1
+    assert rule.start_date is None

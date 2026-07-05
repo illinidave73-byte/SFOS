@@ -28,4 +28,4 @@ def test_to_schedule_rule():
     rule = mapper.to_schedule_rule(cash_flow)
 
     assert rule.rule_type == "Biweekly"
-    assert rule.start_date == date(2026, 1, 1)
+    assert rule.start_date is None

@@ -27,7 +27,10 @@ class SchedulingService:
 
         occurrences: list[ScheduledOccurrence] = []
 
-        current = max(rule.start_date, start_date)
+        if rule.start_date is None:
+            current = start_date
+        else:
+            current = max(rule.start_date, start_date)
 
         while current <= end_date:
 
