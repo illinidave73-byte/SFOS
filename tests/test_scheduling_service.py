@@ -72,6 +72,7 @@ def test_generate_uses_forecast_start_when_rule_start_is_none():
         rule_type="Monthly",
         start_date=None,
         interval=1,
+        day_of_month=1,
     )
 
     service = SchedulingService()
@@ -112,3 +113,125 @@ def test_semi_monthly():
     assert events[1].occurrence_date == date(2026, 1, 30)
     assert events[2].occurrence_date == date(2026, 2, 15)
     assert events[3].occurrence_date == date(2026, 2, 28)
+
+def test_monthly_first_occurrence_uses_day_of_month():
+
+    service = SchedulingService()
+
+    rule = ScheduleRule(
+        rule_type="Monthly",
+        start_date=None,
+        day_of_month=10,
+    )
+
+    events = service.generate(
+        rule,
+        "Test",
+        "Expense",
+        date(2026, 7, 5),
+        date(2026, 7, 31),
+    )
+
+    assert events[0].occurrence_date == date(2026, 7, 10)
+
+def test_monthly_first_occurrence_rolls_to_next_month():
+
+    service = SchedulingService()
+
+    rule = ScheduleRule(
+        rule_type="Monthly",
+        start_date=None,
+        interval=1,
+        day_of_month=10,
+    )
+
+    events = service.generate(
+        rule,
+        "Test",
+        "Expense",
+        date(2026, 7, 15),
+        date(2026, 8, 31),
+    )
+
+    assert events[0].occurrence_date == date(2026, 8, 10)
+
+def test_semi_monthly_first_occurrence():
+
+    service = SchedulingService()
+
+    rule = ScheduleRule(
+        rule_type="SemiMonthly",
+        start_date=None,
+        days_of_month=[15, 30],
+    )
+
+    events = service.generate(
+        rule,
+        "Jana Payroll",
+        "Income",
+        date(2026, 7, 5),
+        date(2026, 7, 31),
+    )
+
+    assert events[0].occurrence_date == date(2026, 7, 15)
+
+def test_semi_monthly_first_occurrence_second_day():
+
+    service = SchedulingService()
+
+    rule = ScheduleRule(
+        rule_type="SemiMonthly",
+        start_date=None,
+        days_of_month=[15, 30],
+    )
+
+    events = service.generate(
+        rule,
+        "Jana Payroll",
+        "Income",
+        date(2026, 7, 20),
+        date(2026, 7, 31),
+    )
+
+    assert events[0].occurrence_date == date(2026, 7, 30)
+
+def test_biweekly_first_occurrence():
+
+    service = SchedulingService()
+
+    rule = ScheduleRule(
+        rule_type="Biweekly",
+        start_date=date(2026, 7, 2),
+        interval=1,
+    )
+
+    events = service.generate(
+        rule,
+        "Boeing Payroll",
+        "Income",
+        date(2026, 7, 5),
+        date(2026, 7, 31),
+    )
+
+    assert events[0].occurrence_date == date(2026, 7, 16)
+
+def test_annual_first_occurrence():
+
+    service = SchedulingService()
+
+    rule = ScheduleRule(
+        rule_type="Annual",
+        start_date=None,
+        month_of_year=7,
+        day_of_month=1,
+    )
+
+    events = service.generate(
+        rule,
+        "HOA Dues",
+        "Expense",
+        date(2026, 7, 5),
+        date(2027, 7, 31),
+    )
+
+    assert events[0].occurrence_date == date(2027, 7, 1)

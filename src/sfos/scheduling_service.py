@@ -3,7 +3,7 @@ SFOS Scheduling Service
 """
 
 from calendar import monthrange
-from datetime import timedelta
+from datetime import date, timedelta
 
 from sfos.schedule_rule import ScheduleRule
 from sfos.scheduled_occurrence import ScheduledOccurrence
@@ -27,10 +27,10 @@ class SchedulingService:
 
         occurrences: list[ScheduledOccurrence] = []
 
-        if rule.start_date is None:
-            current = start_date
-        else:
-            current = max(rule.start_date, start_date)
+        current = self._first_occurrence(
+            rule=rule,
+            forecast_start=start_date,
+        )
 
         while current <= end_date:
 
@@ -53,6 +53,92 @@ class SchedulingService:
 
         return occurrences
 
+    def _first_occurrence(
+        self,
+        rule: ScheduleRule,
+        forecast_start: date,
+    ):
+
+        if (
+            rule.start_date is not None
+            and rule.rule_type.lower() == "biweekly"
+        ):
+
+            current = rule.start_date
+
+            while current < forecast_start:
+                current += timedelta(weeks=2 * rule.interval)
+
+            return current
+
+        if rule.start_date is not None:
+            return max(rule.start_date, forecast_start)
+
+        if rule.rule_type.lower() == "monthly":
+
+            day = min(
+                rule.day_of_month,
+                monthrange(
+                    forecast_start.year,
+                    forecast_start.month,
+                )[1],
+            )
+
+            candidate = forecast_start.replace(day=day)
+
+            if candidate < forecast_start:
+                candidate = self._add_months(candidate, rule.interval)
+
+            return candidate
+
+        if rule.rule_type.lower() == "semimonthly":
+
+            days = sorted(rule.days_of_month)
+
+            # Try every configured day in the current month.
+            for day in days:
+
+                if day >= forecast_start.day:
+
+                    return forecast_start.replace(
+                        day=min(
+                            day,
+                            monthrange(
+                                forecast_start.year,
+                                forecast_start.month,
+                            )[1],
+                        )
+                    )
+
+            # Otherwise use the first configured day next month.
+            next_month = self._add_months(forecast_start, 1)
+
+            return next_month.replace(
+                day=min(
+                    days[0],
+                    monthrange(
+                        next_month.year,
+                        next_month.month,
+                    )[1],
+                )
+            )
+
+        if rule.rule_type.lower() == "annual":
+
+            candidate = forecast_start.replace(
+                month=rule.month_of_year,
+                day=rule.day_of_month,
+            )
+
+            if candidate < forecast_start:
+                candidate = candidate.replace(
+                    year=candidate.year + rule.interval,
+                )
+
+            return candidate
+
+        return forecast_start
+    
     def _next_occurrence(self, current, rule):
 
         rule_type = rule.rule_type.lower()

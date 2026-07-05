@@ -64,6 +64,7 @@ def test_parse_annual_first_day_of_july():
     assert rule.rule_type == "Annual"
     assert rule.day_of_month == 1
     assert rule.start_date is None
+    assert rule.month_of_year==7
 
 def test_parse_every_other_month():
 

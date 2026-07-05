@@ -59,6 +59,7 @@ class ScheduleParser:
                     rule_type="Annual",
                     start_date=None,
                     day_of_month=1,
+                    month_of_year=7,
                 )   
         
         raise NotImplementedError(

@@ -7,6 +7,8 @@ from datetime import date
 
 from sfos.base import BaseModel
 
+from sfos.scheduled_occurrence import ScheduledOccurrence
+
 
 @dataclass(slots=True, kw_only=True)
 class CashForecast(BaseModel):
@@ -27,3 +29,5 @@ class CashForecast(BaseModel):
     daily_balances: list[float] = field(default_factory=list)
 
     warnings: list[str] = field(default_factory=list)
+
+    occurrences: list[ScheduledOccurrence] = field(default_factory=list)

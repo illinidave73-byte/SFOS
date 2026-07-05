@@ -66,4 +66,5 @@ class ForecastEngine:
             ending_balance=balance,
             low_cash_warning=lowest < 1000,
             daily_balances=daily,
+            occurrences=events,
         )
