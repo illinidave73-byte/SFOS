@@ -126,3 +126,44 @@ def test_detect_returns_recurring_descriptions():
     candidates = detector.detect()
 
     assert len(candidates) == 1
+    
+    candidate = candidates[0]
+
+    assert candidate.merchant == "Netflix"
+    assert len(candidate.transactions) == 3
+
+def test_normalize_description():
+
+    detector = RecurringTransactionDetector()
+
+    assert detector._normalize_description(
+        "NETFLIX.COM"
+    ) == "NETFLIX"
+
+def test_grouping_uses_normalized_description():
+
+    detector = RecurringTransactionDetector()
+
+    transactions = [
+        Transaction(
+            posting_date=date(2026, 1, 1),
+            effective_date=date(2026, 1, 1),
+            description="NETFLIX",
+            amount=-19.99,
+            balance=1000,
+        ),
+        Transaction(
+            posting_date=date(2026, 2, 1),
+            effective_date=date(2026, 2, 1),
+            description="NETFLIX.COM",
+            amount=-19.99,
+            balance=980,
+        ),
+    ]
+
+    detector.load_transactions(transactions)
+
+    groups = detector.group_by_description()
+
+    assert len(groups) == 1
+    assert len(groups["NETFLIX"]) == 2

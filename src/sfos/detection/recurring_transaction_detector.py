@@ -1,7 +1,11 @@
 """
 SFOS Recurring Transaction Detector
 """
-
+from sfos.detection.recurring_candidate import RecurringCandidate
+from sfos.detection.recurring_pattern_analyzer import RecurringPatternAnalyzer
+from sfos.detection.recurring_pattern_analyzer import (
+    RecurringPatternAnalyzer,
+)
 
 class RecurringTransactionDetector:
     """Identifies recurring transactions from transaction history."""
@@ -15,12 +19,24 @@ class RecurringTransactionDetector:
 
         groups = self.group_by_description()
 
+        analyzer = RecurringPatternAnalyzer()
+
         candidates = []
 
         for description, transactions in groups.items():
 
             if len(transactions) >= 3:
-                candidates.append(description)
+
+                candidate = RecurringCandidate(
+                    merchant=description,
+                    transactions=transactions,
+                )
+
+                candidate.calculate_intervals()
+
+                candidate.analysis = analyzer.analyze(candidate)
+
+                candidates.append(candidate)
 
         return candidates
     
@@ -30,9 +46,17 @@ class RecurringTransactionDetector:
 
         for transaction in self.transactions:
 
+            merchant = self._normalize_description(
+                    transaction.description
+            )
+
             groups.setdefault(
-                transaction.description,
+                merchant,
                 [],
             ).append(transaction)
 
         return groups
+    
+    def _normalize_description(self, description: str):
+
+        return description.replace(".COM", "")
